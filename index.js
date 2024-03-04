@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
+require('dotenv').config();
 const app = require("./app");
-
-app.listen(3000, () => {
-  console.log("Started express server at port 3000");
+app.listen(process.env.PORT, () => {
+  console.log(`Started express server at port ${process.env.PORT} || 3000`);
 });
