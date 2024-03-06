@@ -3,7 +3,7 @@ module.exports = {
       {  
         name: "Todo-App",  
         script: "index.js",  
-        instances: "6",  
+        instances: "3",  
         exec_mode: "cluster",  
         watch: true,  
         max_memory_restart: "1G",  

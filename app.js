@@ -24,11 +24,14 @@ app.use(express.urlencoded({extended : false }));
 app.use(cookieParser("i'm a bad rishi"));
 app.use(csrf({cookie: true})); 
 app.use(session({
-  secret:"my key super secret ",
-  cookie:{
-    maxAge:24*60*60*1000
+  secret: "my key super secret",
+  resave: false, // Explicitly set resave option to false
+  saveUninitialized: false, // Explicitly set saveUninitialized option to false
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000
   }
-}))
+}));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
