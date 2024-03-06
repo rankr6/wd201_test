@@ -22,7 +22,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
     "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
@@ -38,6 +37,7 @@
     "sequelize": "^6.37.1"
   },
   "devDependencies": {
+    "bcrypt": "^5.1.1",
     "cheerio": "^1.0.0-rc.12",
     "cross-env": "^7.0.3",
     "eslint": "^8.36.0",

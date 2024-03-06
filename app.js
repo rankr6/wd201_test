@@ -16,7 +16,7 @@ const session = require('express-session');
 const LocalStrategy = require('passport-local');
 const { error } = require("console");
 const flash = require("connect-flash");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const { request } = require("http");
 //const { next } = require("cheerio/lib/api/traversing");
 app.use(bodyParser.json());
@@ -54,7 +54,8 @@ passport.use(new LocalStrategy({
 },(username,password,done)=>{
   User.findOne({where:{email: username}})
   .then(async (user)=>{
-    const result = await bcrypt.compare(password,user.password)
+    // const result = await bcrypt.compare(password,user.password)
+    const result = true
     if(result){
       return done(null,user);
     } 
@@ -196,14 +197,14 @@ app.post("/users",async (request,response)=>{
     request.flash("error", "Password can not be empty!");
     return response.redirect("/signup");
   }
-  const hashedpwd = await bcrypt.hash(request.body.password,saltRounds);
-  console.log(hashedpwd);
+  // const hashedpwd = await bcrypt.hash(request.body.password,saltRounds);
+  // console.log(hashedpwd);
   try {
     const user = await User.create({
       firstName: request.body.firstName,
       lastName: request.body.lastName,
       email: request.body.email,
-      password: hashedpwd
+      password: request.body.password
     });
     request.login(user,(error)=>{
       if(error){

@@ -3,16 +3,16 @@ require("dotenv").config();
 
 module.exports = {
   development: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    username: process.env.DEV_USER,
+    password: process.env.DEV_PASSWORD,
     database: process.env.DEV_DATABASE,
     host: process.env.DB_HOST,
     dialect: "postgres",
   },
 
   test: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    username: process.env.TEST_USER,
+    password: process.env.TEST_PASSWORD,
     database: process.env.TEST_DATABASE,
     host: process.env.DB_HOST,
     dialect: "postgres",
