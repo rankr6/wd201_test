@@ -39,15 +39,15 @@ jobs:
 
         # Install dependencies
       - name: Install dependencies
-        run: cd todo-app && npm ci
+        run: npm ci
       # Run unit tests
       - name: Run unit tests
-        run: cd todo-app && npm test
+        run: npm test
       # Run the app
       - name: Run the app
         id: run-app
         run: |
-          cd todo-app && npx sequelize-cli db:drop
+          npx sequelize-cli db:drop
           npx sequelize-cli db:create
           npx sequelize-cli db:migrate
           PORT=3000 npm start &
@@ -55,7 +55,7 @@ jobs:
       # Run integration tests
       - name: Run integration tests
         run: |
-          cd todo-app && npm install cypress cypress-json-results
+          npm install cypress cypress-json-results
           npx cypress run
 
       # Downloads a copy of the code in your repository before running CI tests
