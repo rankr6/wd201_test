@@ -47,6 +47,7 @@ app.use(express.static(path.join(__dirname + "/public")))
 app.use(flash());
 
 
+
 passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
