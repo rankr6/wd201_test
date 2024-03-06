@@ -10,7 +10,8 @@
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
     "prepare": "husky install todo-cli/.husky",
     "clean:start": "npm run pretest && cross-env NODE_ENV=test npm start",
-    "cy:test": "npx cypress run"
+    "cy:test": "npx cypress run",
+    "lint:fix": "eslint --fix --ext .js,.jsx ."
   },
   "lint-staged": {
     "*.js": [
