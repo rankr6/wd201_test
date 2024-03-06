@@ -11,7 +11,7 @@ module.exports = {
   },
 
   test: {
-    username: process.env.TEST_USER,
+    username: process.env.TEST_USERNAME,
     password: process.env.TEST_PASSWORD,
     database: process.env.TEST_DATABASE,
     host: process.env.DB_HOST,
