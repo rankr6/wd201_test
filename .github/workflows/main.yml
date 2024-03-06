@@ -78,5 +78,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: clockbox:latest        
+          tags: rankr6/clockbox:latest        
 
