@@ -14,6 +14,7 @@ module.exports = {
     username: "postgres",
     password: "rank",
     database: "todo-test",
+    host: "127.0.0.1",
     dialect: "postgres",
   },
   
