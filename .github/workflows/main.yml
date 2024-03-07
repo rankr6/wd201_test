@@ -19,15 +19,17 @@ jobs:
       # - name: Run unit tests  
       #   run: docker-compose run app npm test  
   
-      - name: Run integration tests  
+      - name: Run app  
         run: |  
           docker-compose run app npx sequelize-cli db:drop  
           docker-compose run app npx sequelize-cli db:create  
           docker-compose run app npx sequelize-cli db:migrate  
           docker-compose run app npm run start:dev &  
           sleep 5  
-          docker-compose run app npm install cypress cypress-json-results  
-          docker-compose run app npx cypress run  
+      - name: Run integration tests
+        run: |
+          docker-compose run app npm install cypress cypress-json-results
+          docker-compose run app npx cypress run --env STUDENT_SUBMISSION_URL="http://localhost:3000/" 
   
       - name: Notify on success  
         if: success()  
