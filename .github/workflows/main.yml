@@ -1,82 +1,43 @@
-name: CI/CD
-on: push
-
-
-env:
-  PG_DATABASE: "todo"
-  PG_USER: "postgres"
-  PG_PASSWORD: "rank"
-
-# Jobs
-jobs:
-  run-tests:
-    # Runs on Ubuntu latest version
-
-    runs-on: ubuntu-latest
-
-    # Define a PostgreSQL service for running tests
-    services:
-      postgres:
-        image: postgres:11.7
-        env:
-          POSTGRES_USER: "postgres"
-          POSTGRES_PASSWORD: "admin"
-          POSTGRES_DB: "wd-todo-test"
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    # Steps to execute within the job
-    steps:
-      # Check out repository code
-      - name: Check out repository code
+name: Automat Docker CI & CD  
+  
+on: [ push ]  
+  
+jobs:  
+  run-tests:  
+    runs-on: ubuntu-latest  
+  
+    steps:  
+      - name: Checkout repository  
         uses: actions/checkout@v3
 
-        # Install dependencies
-      - name: Install dependencies
-        run: npm ci
-      # Run unit tests
-      - name: Run unit tests
-        run: npm test
-      # Run the app
-      - name: Run the app
-        id: run-app
-        run: |
-          npx sequelize-cli db:drop
-          npx sequelize-cli db:create
-          npx sequelize-cli db:migrate
-          PORT=3000 npm start &
-          sleep 5
-      # Run integration tests
-      - name: Run integration tests
-        run: |
-          npm install cypress cypress-json-results
-          npx cypress run
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v4
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_HUB_USER}}
-          password: ${{ secrets.DOCKER_HUB}}
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      -
-        name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: rankr6/clockbox:latest        
-
+      - name: Build Docker image  
+        run: docker-compose build  
+  
+      - name: Run Docker Compose  
+        run: docker-compose up -d & sleep 5  
+  
+      - name: Run unit tests  
+        run: docker-compose run app npm test  
+  
+      - name: Run integration tests  
+        run: |  
+          docker-compose run app npx sequelize-cli db:drop  
+          docker-compose run app npx sequelize-cli db:create  
+          docker-compose run app npx sequelize-cli db:migrate  
+          docker-compose run app npm run start:dev &  
+          sleep 5  
+          docker-compose run app npm install cypress cypress-json-results  
+          docker-compose run app npx cypress run  
+  
+      - name: Notify on success  
+        if: success()  
+        run: |  
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"✨ Great News! The CI & CD workflow completed successfully! All tests passed smoothly. :tada:"}' ${{ secrets.SLACK_WEBHOOK_URL }}  
+  
+      - name: Notify on failure  
+        if: failure()  
+        run: |  
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"⚠️ Uh-oh! The CI & CD workflow encountered issues and failed. Immediate attention is needed. :warning:"}' ${{ secrets.SLACK_WEBHOOK_URL }}  
+  
+      - name: Stop and remove Docker containers  
+        run: docker-compose down
