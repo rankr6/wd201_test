@@ -31,11 +31,9 @@ jobs:
           docker-compose run app npm run start &
           sleep 5  
 
-      - name: Wait for services to be ready
-        run: docker-compose exec app wait-for-it database:5432 -- echo "Database is ready!" && docker-compose exec app wait-for-it cypress:3000 -- echo "Cypress is ready!"
-
       - name: Run integration tests
         run: |
+          docker-compose exec app npm install cypress cypress-json-results
           docker-compose exec app npx cypress run --env STUDENT_SUBMISSION_URL="http://localhost:3000/"
 
       - name: Notify on success  
