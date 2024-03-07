@@ -26,12 +26,11 @@ jobs:
           docker-compose run app npx sequelize-cli db:migrate  
           docker-compose run app npm run start:dev &
           sleep 5  
-          docker-compose run app npm uninstall cypress cypress-json-results
-          docker-compose run app npm install cypress cypress-json-results
-
 
       - name: Run integration tests
         run: |
+          docker-compose run app npm uninstall cypress cypress-json-results
+          docker-compose run app npm install cypress cypress-json-results
           docker-compose run app npx cypress run --env STUDENT_SUBMISSION_URL="http://localhost:3000/" 
   
       - name: Notify on success  
