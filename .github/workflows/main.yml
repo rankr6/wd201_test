@@ -20,15 +20,16 @@ jobs:
       - name: Build Docker image  
         run: docker-compose build  
 
-      - name: Run app  & integration tests
+      - name: Run app & integration tests
         run: | 
           docker-compose up -d
-          docker-compose -f docker-compose.yml exec app npx sequelize-cli db:drop  
-          docker-compose -f docker-compose.yml exec app npx sequelize-cli db:create  
-          docker-compose -f docker-compose.yml exec app npx sequelize-cli db:migrate  
-          docker-compose -f docker-compose.yml exec app npm run start &
+          docker-compose -f docker-compose.yml exec -T app npx sequelize-cli db:drop  
+          docker-compose -f docker-compose.yml exec -T app npx sequelize-cli db:create  
+          docker-compose -f docker-compose.yml exec -T app npx sequelize-cli db:migrate  
+          docker-compose -f docker-compose.yml exec -T app npm run start &
           npm install cypress cypress-json-results
           npx cypress run --env STUDENT_SUBMISSION_URL="http://localhost:3000/"
+      
 
       - name: Notify on success  
         if: success()  
