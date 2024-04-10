@@ -22,7 +22,7 @@ jobs:
 
       - name: Run app & integration tests
         run: | 
-          docker-compose up -d
+          docker-compose up 
           docker-compose -f docker-compose.yml exec -T app npx sequelize-cli db:drop  
           docker-compose -f docker-compose.yml exec -T app npx sequelize-cli db:create  
           docker-compose -f docker-compose.yml exec -T app npx sequelize-cli db:migrate  
